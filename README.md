@@ -1,6 +1,6 @@
 # LoRA + DoRA as Extension: Weight-Decomposed Low-Rank Adaptation on GPT-2
 
-**CS 4782 Deep Learning -- Cornell University -- Spring 2026**
+**CS 4782 Deep Learning - Cornell University - Spring 2026**
 Arnav Tevatia (at846)
 
 ---
