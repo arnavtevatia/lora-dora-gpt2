@@ -7,7 +7,7 @@ Arnav Tevatia (at846)
 
 ## Introduction
 
-This repo contains a from-scratch PyTorch reimplementation of **LoRA** (Hu et al., ICLR 2022) applied to GPT-2 small, with **DoRA** (Liu et al., ICML 2024) added as an extension. No PEFT library is used -- all adapter modules are implemented directly.
+This repo contains a from-scratch PyTorch reimplementation of **LoRA** (Hu et al., ICLR 2022) applied to GPT-2 small, with **DoRA** (Liu et al., ICML 2024) added as an extension. No PEFT library is used - all adapter modules are implemented directly.
 
 LoRA freezes pretrained weights and injects trainable low-rank matrix pairs BA to approximate weight updates, reducing trainable parameters from 124M to ~147K at r=4. DoRA extends this by decomposing weights into magnitude and direction components, applying LoRA only to the directional part for more stable gradient dynamics.
 
@@ -43,15 +43,15 @@ report/         # PDF of 2-page project report
 **Dataset:** WikiText-2 (`wikitext-2-raw-v1`), tokenized into 512-token blocks, causal language modeling objective. Evaluated by validation perplexity.
 
 **Key classes in `code/lora_dora.py`:**
-- `LoRALinear` -- wraps a frozen `nn.Linear`, adds trainable A (r x d, Gaussian init) and B (d x r, zeros init). Forward: W0x + (a/r) * (xA^T)B^T
-- `DoRALinear` -- extends LoRALinear with a magnitude vector m. Forward: m * (W0 + BA) / ||W0 + BA||_c. Column norms are detached from the gradient graph (DoRA Section 4.3) to reduce training memory ~24% with <0.2% accuracy impact.
-- `GPT2AttentionWithLoRA` -- intercepts GPT-2's fused `c_attn` projection and applies LoRA/DoRA deltas to Q and V slices only (K unchanged, per LoRA Table 5).
+- `LoRALinear` - wraps a frozen `nn.Linear`, adds trainable A (r x d, Gaussian init) and B (d x r, zeros init). Forward: W0x + (a/r) * (xA^T)B^T
+- `DoRALinear` - extends LoRALinear with a magnitude vector m. Forward: m * (W0 + BA) / ||W0 + BA||_c. Column norms are detached from the gradient graph (DoRA Section 4.3) to reduce training memory ~24% with <0.2% accuracy impact.
+- `GPT2AttentionWithLoRA` - intercepts GPT-2's fused `c_attn` projection and applies LoRA/DoRA deltas to Q and V slices only (K unchanged, per LoRA Table 5).
 
 **Training:** AdamW, gradient clipping at max_norm=1.0, 3 epochs, lr=3e-4, batch size 4.
 
 **Verification steps before training:**
-1. Parameter audit -- only A, B, and magnitude vectors have `requires_grad=True`
-2. Numerical equivalence check -- model output identical to pretrained GPT-2 at initialization (B=zeros ensures zero LoRA term)
+1. Parameter audit - only A, B, and magnitude vectors have `requires_grad=True`
+2. Numerical equivalence check - model output identical to pretrained GPT-2 at initialization (B=zeros ensures zero LoRA term)
 
 ---
 
@@ -91,13 +91,13 @@ This runs sequentially: Frozen GPT-2, Full fine-tuning, LoRA r=4, LoRA r=8, DoRA
 | DoRA r=4 | 166K | 25.50 | 4,227 |
 | DoRA r=8 | 313K | **25.22** | 4,228 |
 
-Key finding: LoRA beats full fine-tuning despite using 843x fewer parameters -- the low-rank constraint acts as implicit regularization on WikiText-2's small training set. DoRA consistently outperforms LoRA at the same rank, with minimal memory overhead.
+Key finding: LoRA beats full fine-tuning despite using 843x fewer parameters - the low-rank constraint acts as implicit regularization on WikiText-2's small training set. DoRA consistently outperforms LoRA at the same rank, with minimal memory overhead.
 
 ---
 
 ## Conclusion
 
-LoRA's value on small datasets is not just parameter efficiency -- the low-rank constraint prevents overfitting and leads to better generalization. DoRA's magnitude-direction decomposition provides a consistent small improvement over LoRA with negligible extra cost, and appears to be a reasonable default in similar settings.
+LoRA's value on small datasets is not just parameter efficiency - the low-rank constraint prevents overfitting and leads to better generalization. DoRA's magnitude-direction decomposition provides a consistent small improvement over LoRA with negligible extra cost, and appears to be a reasonable default in similar settings.
 
 ---
 
