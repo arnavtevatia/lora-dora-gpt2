@@ -1,0 +1,220 @@
+Device: cuda
+
+============================================================
+  Config: Frozen GPT-2  |  mode=frozen  r=4  alpha=1.0
+============================================================
+/usr/local/lib/python3.12/dist-packages/huggingface_hub/utils/_auth.py:93: UserWarning: 
+The secret `HF_TOKEN` does not exist in your Colab secrets.
+To authenticate with the Hugging Face Hub, create a token in your settings tab (https://huggingface.co/settings/tokens), set it as secret in your Google Colab and restart your session.
+You will be able to reuse this secret in all of your notebooks.
+Please note that authentication is recommended but still optional to access public models or datasets.
+  warnings.warn(
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+WARNING:huggingface_hub.utils._http:Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+tokenizer_config.json: 100%
+ 26.0/26.0 [00:00<00:00, 2.57kB/s]
+vocab.json: 
+ 1.04M/? [00:00<00:00, 5.44MB/s]
+merges.txt: 
+ 456k/? [00:00<00:00, 3.89MB/s]
+tokenizer.json: 
+ 1.36M/? [00:00<00:00, 7.61MB/s]
+README.md: 
+ 10.5k/? [00:00<00:00, 1.03MB/s]
+wikitext-2-raw-v1/test-00000-of-00001.pa(…): 100%
+ 733k/733k [00:00<00:00, 3.67MB/s]
+wikitext-2-raw-v1/train-00000-of-00001.p(…): 100%
+ 6.36M/6.36M [00:00<00:00, 31.7MB/s]
+wikitext-2-raw-v1/validation-00000-of-00(…): 100%
+ 657k/657k [00:00<00:00, 3.29MB/s]
+Generating test split: 100%
+ 4358/4358 [00:00<00:00, 87915.93 examples/s]
+Generating train split: 100%
+ 36718/36718 [00:00<00:00, 500033.94 examples/s]
+Generating validation split: 100%
+ 3760/3760 [00:00<00:00, 128349.69 examples/s]
+Map: 100%
+ 4358/4358 [00:00<00:00, 6133.42 examples/s]
+Map: 100%
+ 36718/36718 [00:06<00:00, 4281.92 examples/s]
+Map: 100%
+ 3760/3760 [00:01<00:00, 3414.42 examples/s]
+Map: 100%
+ 4358/4358 [00:01<00:00, 3214.39 examples/s]
+Map: 100%
+ 36718/36718 [00:12<00:00, 2496.92 examples/s]
+Map: 100%
+ 3760/3760 [00:01<00:00, 3516.39 examples/s]
+config.json: 100%
+ 665/665 [00:00<00:00, 65.7kB/s]
+model.safetensors: 100%
+ 548M/548M [00:02<00:00, 282MB/s]
+Loading weights: 100%
+ 148/148 [00:00<00:00, 417.17it/s, Materializing param=transformer.wte.weight]
+GPT2LMHeadModel LOAD REPORT from: gpt2
+Key                  | Status     |  | 
+---------------------+------------+--+-
+h.{0...11}.attn.bias | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED	:can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+generation_config.json: 100%
+ 124/124 [00:00<00:00, 8.04kB/s]
+
+Parameter audit:
+  Trainable params :            0  (0.0000%)
+  Frozen params    :  124,439,808
+  Total params     :  124,439,808
+`loss_type=None` was set in the config but it is unrecognized. Using the default loss: `ForCausalLMLoss`.
+
+  Perplexity before training: 36.08
+  (No trainable params, skipping training)
+
+============================================================
+  Config: Full Fine-tuning  |  mode=full  r=4  alpha=1.0
+============================================================
+Loading weights: 100%
+ 148/148 [00:00<00:00, 599.76it/s, Materializing param=transformer.wte.weight]
+GPT2LMHeadModel LOAD REPORT from: gpt2
+Key                  | Status     |  | 
+---------------------+------------+--+-
+h.{0...11}.attn.bias | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED	:can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+
+Parameter audit:
+  Trainable params :  124,439,808  (100.0000%)
+  Frozen params    :            0
+  Total params     :  124,439,808
+
+  Perplexity before training: 36.08
+  Epoch 1/3  loss=3.3956  val_ppl=27.76  time=726.3s
+  Epoch 2/3  loss=2.9303  val_ppl=28.54  time=728.9s
+  Epoch 3/3  loss=2.5955  val_ppl=32.13  time=730.5s
+
+  Final val perplexity : 32.13
+  Peak GPU memory      : 5753.1 MB
+  Avg time/epoch       : 728.6s
+
+============================================================
+  Config: LoRA r=4  |  mode=lora  r=4  alpha=1.0
+============================================================
+Loading weights: 100%
+ 148/148 [00:00<00:00, 649.08it/s, Materializing param=transformer.wte.weight]
+GPT2LMHeadModel LOAD REPORT from: gpt2
+Key                  | Status     |  | 
+---------------------+------------+--+-
+h.{0...11}.attn.bias | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED	:can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+
+Parameter audit:
+  Trainable params :      147,456  (0.1184%)
+  Frozen params    :  124,439,808
+  Total params     :  124,587,264
+
+  Perplexity before training: 36.08
+  Epoch 1/3  loss=3.5413  val_ppl=27.08  time=532.8s
+  Epoch 2/3  loss=3.4321  val_ppl=26.04  time=532.5s
+  Epoch 3/3  loss=3.3992  val_ppl=25.65  time=533.1s
+
+  Final val perplexity : 25.65
+  Peak GPU memory      : 4117.8 MB
+  Avg time/epoch       : 532.8s
+
+============================================================
+  Config: LoRA r=8  |  mode=lora  r=8  alpha=1.0
+============================================================
+Loading weights: 100%
+ 148/148 [00:00<00:00, 553.37it/s, Materializing param=transformer.wte.weight]
+GPT2LMHeadModel LOAD REPORT from: gpt2
+Key                  | Status     |  | 
+---------------------+------------+--+-
+h.{0...11}.attn.bias | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED	:can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+
+Parameter audit:
+  Trainable params :      294,912  (0.2364%)
+  Frozen params    :  124,439,808
+  Total params     :  124,734,720
+
+  Perplexity before training: 36.08
+  Epoch 1/3  loss=3.5268  val_ppl=26.69  time=533.8s
+  Epoch 2/3  loss=3.4122  val_ppl=25.69  time=534.5s
+  Epoch 3/3  loss=3.3795  val_ppl=25.26  time=532.4s
+
+  Final val perplexity : 25.26
+  Peak GPU memory      : 4120.4 MB
+  Avg time/epoch       : 533.5s
+
+============================================================
+  Config: DoRA r=4  |  mode=dora  r=4  alpha=1.0
+============================================================
+Loading weights: 100%
+ 148/148 [00:00<00:00, 503.30it/s, Materializing param=transformer.wte.weight]
+GPT2LMHeadModel LOAD REPORT from: gpt2
+Key                  | Status     |  | 
+---------------------+------------+--+-
+h.{0...11}.attn.bias | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED	:can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+
+Parameter audit:
+  Trainable params :      165,888  (0.1331%)
+  Frozen params    :  124,439,808
+  Total params     :  124,605,696
+
+  Perplexity before training: 36.08
+  Epoch 1/3  loss=3.5326  val_ppl=26.98  time=578.7s
+  Epoch 2/3  loss=3.4246  val_ppl=25.90  time=579.6s
+  Epoch 3/3  loss=3.3918  val_ppl=25.50  time=577.7s
+
+  Final val perplexity : 25.50
+  Peak GPU memory      : 4226.5 MB
+  Avg time/epoch       : 578.7s
+
+============================================================
+  Config: DoRA r=8  |  mode=dora  r=8  alpha=1.0
+============================================================
+Loading weights: 100%
+ 148/148 [00:00<00:00, 585.88it/s, Materializing param=transformer.wte.weight]
+GPT2LMHeadModel LOAD REPORT from: gpt2
+Key                  | Status     |  | 
+---------------------+------------+--+-
+h.{0...11}.attn.bias | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED	:can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+
+Parameter audit:
+  Trainable params :      313,344  (0.2512%)
+  Frozen params    :  124,439,808
+  Total params     :  124,753,152
+
+  Perplexity before training: 36.08
+  Epoch 1/3  loss=3.5239  val_ppl=26.66  time=579.8s
+  Epoch 2/3  loss=3.4088  val_ppl=25.66  time=581.4s
+  Epoch 3/3  loss=3.3747  val_ppl=25.22  time=581.4s
+
+  Final val perplexity : 25.22
+  Peak GPU memory      : 4228.3 MB
+  Avg time/epoch       : 580.8s
+
+
+================================================================================
+RESULTS SUMMARY
+================================================================================
+Config                 Mode     r     Trainable      Val PPL    Peak GPU (MB)   Avg Epoch (s)
+--------------------------------------------------------------------------------
+Frozen GPT-2           frozen   4     0              36.08      N/A             N/A
+Full Fine-tuning       full     4     124,439,808    32.13      5753.1          728.6
+LoRA r=4               lora     4     147,456        25.65      4117.8          532.8
+LoRA r=8               lora     8     294,912        25.26      4120.4          533.5
+DoRA r=4               dora     4     165,888        25.50      4226.5          578.7
+DoRA r=8               dora     8     313,344        25.22      4228.3          580.8
+================================================================================
