@@ -7,17 +7,17 @@ Arnav Tevatia (at846)
 
 ## Introduction
 
-This repo contains a from-scratch PyTorch reimplementation of **LoRA** (Hu et al., ICLR 2022) applied to GPT-2 small, with **DoRA** (Liu et al., ICML 2024) added as an extension. No PEFT library is used - all adapter modules are implemented directly.
+This repo contains a from-scratch PyTorch implementation of **LoRA** (Hu et al., ICLR 2022) applied to GPT-2 small, with **DoRA** (Liu et al., ICML 2024) added as my own extension. No PEFT library is used - all adapter modules are implemented directly.
 
-LoRA freezes pretrained weights and injects trainable low-rank matrix pairs BA to approximate weight updates, reducing trainable parameters from 124M to ~147K at r=4. DoRA extends this by decomposing weights into magnitude and direction components, applying LoRA only to the directional part for more stable gradient dynamics.
+LoRA freezes pretrained weights and injects trainable low-rank matrix pairs BA to approximate weight updates, reducing trainable parameters from 124M to ~147K at r=4. DoRA extends this by decomposing weights into magnitude and direction components, applying LoRA only to the directional part for more stable gradient dynamics. I was particularly interested in whether DoRA's advantage holds at smaller model scales, since the original paper's results are on LLaMA-7B and larger.
 
 ---
 
 ## Chosen Result
 
-We replicate LoRA's core claim from **Table 11** of the paper: LoRA matches or exceeds full fine-tuning perplexity on GPT-2 with far fewer trainable parameters. We also replicate the rank sensitivity finding from **Table 18**, which shows diminishing returns past r=4.
+I replicate LoRA's core claim from **Table 11** of the paper: LoRA matches or exceeds full fine-tuning perplexity on GPT-2 with far fewer trainable parameters. I also replicate the rank sensitivity finding from **Table 18**, which shows diminishing returns past r=4.
 
-As an extension, we add DoRA at matching rank configurations (r=4, r=8) to test whether the magnitude-direction decomposition improves over LoRA at the same parameter budget.
+As my extension, I add DoRA at matching rank configurations (r=4, r=8) to test whether the magnitude-direction decomposition improves over LoRA at the same parameter budget.
 
 ---
 
@@ -91,13 +91,13 @@ This runs sequentially: Frozen GPT-2, Full fine-tuning, LoRA r=4, LoRA r=8, DoRA
 | DoRA r=4 | 166K | 25.50 | 4,227 |
 | DoRA r=8 | 313K | **25.22** | 4,228 |
 
-Key finding: LoRA beats full fine-tuning despite using 843x fewer parameters - the low-rank constraint acts as implicit regularization on WikiText-2's small training set. DoRA consistently outperforms LoRA at the same rank, with minimal memory overhead.
+LoRA beats full fine-tuning despite using 843x fewer parameters. I did not expect this going in - it turns out the low-rank constraint acts as implicit regularization on WikiText-2's small training set, and full fine-tuning actually overfits after epoch 1. DoRA consistently outperforms LoRA at the same rank, though the gap is smaller than the paper's LLaMA-7B results, which makes sense given the simpler task and smaller model.
 
 ---
 
 ## Conclusion
 
-LoRA's value on small datasets is not just parameter efficiency - the low-rank constraint prevents overfitting and leads to better generalization. DoRA's magnitude-direction decomposition provides a consistent small improvement over LoRA with negligible extra cost, and appears to be a reasonable default in similar settings.
+LoRA's value on small datasets goes beyond parameter efficiency - the low-rank constraint also leads to better generalization by preventing overfitting. DoRA provides a consistent small improvement over LoRA with negligible extra cost. Whether that advantage grows with model scale is an open question and a natural next step.
 
 ---
 
@@ -113,4 +113,4 @@ LoRA's value on small datasets is not just parameter efficiency - the low-rank c
 
 ## Acknowledgements
 
-This project was completed as the CS 4782 (Deep Learning) final project at Cornell University, Spring 2026, under Professor Kilian Weinberger. Implementation is from scratch without any PEFT library.
+This project was completed as the CS 4782 (Deep Learning) final project at Cornell University, Spring 2026, under Professor Kilian Weinberger. All implementation is from scratch without any PEFT library.
